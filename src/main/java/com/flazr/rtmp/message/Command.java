@@ -21,6 +21,7 @@ package com.flazr.rtmp.message;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +124,16 @@ public abstract class Command extends AbstractMessage {
             object.putAll(options.getParams());
         }
         return new CommandAmf0("connect", object, options.getArgs());
+    }
+
+	// Added by Abhay Chaware for BBB 0.9 compatibility
+    public static Command validateToken(ClientOptions options) {
+        Amf0Object object = object();
+        
+        Map<String,String> m = new HashMap<>();
+        m.put("userId",(String)options.getArgs()[0] );
+        m.put("authToken",(String)options.getArgs()[1] );
+        return new CommandAmf0("validateToken", object, m);
     }
 
     public static Command connectSuccess(int transactionId) {
